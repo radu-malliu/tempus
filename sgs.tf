@@ -5,6 +5,7 @@ variable "master_ip" {
 resource "aws_security_group" "public" {
   name        = "public"
   description = "Allow traffic to/from public instance (bastion)"
+	vpc_id = "${aws_vpc.tempus.id}"
 
   ingress {
     from_port   = 22
@@ -36,6 +37,7 @@ resource "aws_security_group" "public" {
 resource "aws_security_group" "private" {
   name        = "private"
   description = "Allow traffic to/from private instances"
+	vpc_id = "${aws_vpc.tempus.id}"
 
   ingress {
     from_port   = 22

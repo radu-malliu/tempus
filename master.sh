@@ -15,7 +15,8 @@ if [ "$#" -ne 1 ]; then
 fi
 
 #test if the one argument is a number
-if ! [[ $1 =~ '^[0-9]+$' ]]; then
+re='^[0-9]+$'
+if ! [[ $1 =~ $re ]]; then
   echo "Error: Argument should be a number"
 	exit 2
 fi
@@ -32,10 +33,10 @@ if [ -f ~/.aws/config ]; then
 fi
 
 #create ssh keypairs if not already there
-if ! [ -f to_bastion ]; then
+if ! [ -f "to_bastion" ]; then
 	ssh-keygen -b 2048 -t rsa -f to_bastion -N "" -C "user@terraform-master"
 fi
-if ! [ -f to_docker ]; then
+if ! [ -f "to_docker" ]; then
 	ssh-keygen -b 2048 -t rsa -f to_docker -N "" -C "ec2-user@bastion"
 fi
 bastion_key="$(cat to_bastion.pub)"
@@ -51,9 +52,17 @@ if [ "$master_ip" == "" ]; then
 	exit 3
 fi
 
+#create tfvars file
+printf '%s\n' "inst_count = \"${inst_count}\"" "region_name = \"${region}\"" "keys = { to_bastion = \"${bastion_key}\", to_docker = \"${docker_key}\" }" "master_ip = \"${master_ip}\"" >> variables.tfvars
+
 #run terraform init to download required plugins
 terraform init
 
 #create architecture
-terraform plan -var "inst_count=${inst_count}" -var "region_name=${region}" -var "keys={ to_bastion = "$bastion_key", to_docker = "$docker_key" }" -var "master_ip=${master_ip}" -out="plan"
-terraform apply plan
+terraform plan -var-file="variables.tfvars" -out="plan"
+if [ -f "plan" ]; then
+	terraform apply plan
+else
+	echo "Failed to generate plan, exiting"
+	exit 4
+fi

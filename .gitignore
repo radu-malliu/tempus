@@ -1,3 +1,6 @@
 .terraform
 to_bastion*
 to_docker*
+*.tfstate*
+variables.tfvars
+plan
