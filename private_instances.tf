@@ -20,4 +20,20 @@ resource "aws_instance" "example" {
 	key_name = "${aws_key_pair.to_docker.key_name}"
 
   depends_on = ["aws_subnet.private"]
+
+	provisioner "remote-exec" {
+    inline = [
+      "docker run hello-world"
+    ]
+  	connection {
+    	type     = "ssh"
+    	
+			user = "ec2-user"
+			private_key = "${file("to_docker")}"
+
+			bastion_host = "${aws_instance.bastion.public_ip}"
+			bastion_user = "ec2-user"
+			bastion_private_key = "${file("to_bastion")}"
+  	}	
+	}
 }

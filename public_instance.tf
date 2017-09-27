@@ -8,4 +8,15 @@ resource "aws_instance" "bastion" {
 	key_name = "${aws_key_pair.to_bastion.key_name}"
 
   depends_on = ["aws_subnet.public"]
+
+	provisioner "file" {
+  source      = "to_docker"
+  destination = "~ec2-user/.ssh/to_docker"
+
+  connection {
+    type     = "ssh"
+    user     = "ec2-user"
+    private_key = "${file("to_bastion")}"
+  }
+}
 }
