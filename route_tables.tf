@@ -1,3 +1,5 @@
+#Defines the route tables required for the typical Scenario 2 AWS VPC, as well as te associations of these to the respective subnets (public and private)
+
 resource "aws_route_table" "public" {
   vpc_id = "${aws_vpc.tempus.id}"
 

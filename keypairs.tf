@@ -1,3 +1,6 @@
+#Defines SSH key pairs required for accessing instances.
+#Separate key pairs are used for the bastion host and the private Docker instances
+
 variable "keys" {
 	default = {
 		"to_bastion" = ""

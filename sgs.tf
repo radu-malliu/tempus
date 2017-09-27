@@ -1,3 +1,5 @@
+#Defines the security groups required to showcase Scenario 2 AWS VPC setup. The public group allows SSH access from the master machine running TF to the bastion host. The private group allows access from the bastion host to all private instances. The groups also allow HTTP and HTTPS outbound access to any destination for all instances (for updates, packages, etc.)
+
 variable "master_ip" {
 	default = "0.0.0.0/0"
 }

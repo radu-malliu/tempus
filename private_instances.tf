@@ -1,3 +1,5 @@
+#Defines the private Docker instances to be provisioned. We provision these as private to showcase the Scenario 2 AWS VPC setup
+
 variable "inst_count" {
 	default = "1"
 }

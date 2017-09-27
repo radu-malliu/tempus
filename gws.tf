@@ -1,3 +1,5 @@
+#Defines required gateways for Scenario 2 AWS infrastructure, along with EIP for NAT gateway
+
 resource "aws_eip" "ip_ngw" {
   vpc      = true
 }

@@ -1,3 +1,6 @@
+#Defines the public instance to be used as a bastion host. We use this instance to showcase the Scenario 2 AWS VPC setup
+#Also defines the AMI list per region for the AWS Linux AMI that is used for both public and private instances
+
 variable "amis" {
 	default = {
 		"us-east-1" = "ami-a4c7edb2"
